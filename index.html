@@ -15,64 +15,118 @@
         }
         .card {
             background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             text-align: center;
         }
-        h2 { color: #2c3e50; margin-bottom: 10px; font-size: 24px; }
-        h3 { color: #4f5f6f; font-size: 18px; margin-bottom: 25px; font-weight: 500; min-height: 54px; display: flex; align-items: center; justify-content: center;}
-        .divider { height: 1px; background-color: #e0e0e0; margin: 15px 0 25px 0; }
+        
+        /* Logo & Header Styling */
+        .logo-container {
+            margin-bottom: 15px;
+        }
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+            fill: #27ae60;
+            transition: transform 0.3s ease;
+        }
+        .logo-container:hover .logo-icon {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        h2 { 
+            color: #2c3e50; 
+            margin: 10px 0 0 0; 
+            font-size: 24px; 
+            letter-spacing: -0.5px;
+        }
+        h3 { 
+            color: #4f5f6f; 
+            font-size: 18px; 
+            margin-bottom: 25px; 
+            font-weight: 500; 
+            min-height: 54px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            line-height: 1.4;
+        }
+        .divider { 
+            height: 1px; 
+            background-color: #eef2f5; 
+            margin: 20px 0 25px 0; 
+        }
         .btn-container {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
         button, .btn-link {
-            padding: 12px 35px;
+            padding: 14px 40px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             border: none;
-            border-radius: 6px;
-            transition: all 0.2s;
+            border-radius: 8px;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: inline-block;
         }
-        .btn-yes { background-color: #27ae60; color: white; }
-        .btn-yes:hover { background-color: #219653; }
-        .btn-no { background-color: #e74c3c; color: white; }
-        .btn-no:hover { background-color: #c0392b; }
+        button:active {
+            transform: scale(0.98);
+        }
+        .btn-yes { background-color: #27ae60; color: white; box-shadow: 0 4px 6px rgba(39, 174, 96, 0.2); }
+        .btn-yes:hover { background-color: #219653; box-shadow: 0 6px 12px rgba(39, 174, 96, 0.3); }
+        
+        .btn-no { background-color: #e74c3c; color: white; box-shadow: 0 4px 6px rgba(231, 76, 60, 0.2); }
+        .btn-no:hover { background-color: #c0392b; box-shadow: 0 6px 12px rgba(231, 76, 60, 0.3); }
+        
         .btn-pdf { background-color: #2980b9; color: white; margin-top: 10px; box-sizing: border-box; width: 100%;}
         .btn-pdf:hover { background-color: #2471a3; }
-        .btn-restart { background-color: #7f8c8d; color: white; margin-top: 25px; width: 100%; }
-        .btn-restart:hover { background-color: #6c7a7b; }
+        
+        .btn-restart { 
+            background-color: #f1f2f6; 
+            color: #7f8c8d; 
+            margin-top: 30px; 
+            width: 100%; 
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px;
+        }
+        .btn-restart:hover { background-color: #e4e7eb; color: #57606f; }
+        
         .intervention {
-            font-size: 24px;
-            color: #2980b9;
+            font-size: 22px;
+            color: #1b4f72;
             font-weight: bold;
             margin: 20px 0;
-            padding: 15px;
+            padding: 20px;
             background: #e1f5fe;
-            border-radius: 6px;
+            border-radius: 8px;
+            border-left: 5px solid #2980b9;
         }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Peatland Restoration Intervention Tool</h2>
+<div class="logo-container">
+    <img src="logo_1.png" alt="Peatland Tool Logo" style="height: 65px; width: auto;">
+</div>
+
+        
+    
+    <h2>Peatland Restoration Decision Tool</h2>
     <div class="divider"></div>
 
-    <div id="app-content">
-        </div>
+    <div id="app-content"></div>
 
-    <button class="btn-restart" onclick="restartApp()">Start Over</button>
+    <button class="btn-restart" onclick="restartApp()">🔄 Start Over</button>
 </div>
 
 <script>
-
 const tree = {
     start: {
         text: "Is the gully eroding?",
@@ -82,17 +136,7 @@ const tree = {
     q2: {
         text: "Is there peat at the base of the gully?",
         yes: "q_peat_shallow",
-        no: "q_stone_drop" 
-    },
-    q_mineral_veg: {
-        text: "Is the mineral base vegetated?",
-        yes: "q_sides_eroding",
         no: "q_stone_drop"
-    },
-    q_sides_eroding: {
-        text: "Confirm if the sides are eroding:",
-        yes: "q_stone_drop",
-        no: "result_nwn"
     },
     q_peat_shallow: {
         text: "Is the peat shallower than 15cm?",
@@ -129,7 +173,6 @@ const tree = {
         yes: "result_coir",
         no: "result_handball"
     },
-    // Only the requested endings retain the PDF paths
     result_nwn: { text: "No work Necessary (NWN)", isEnd: true },
     result_peat_dam: { text: "Intervention: Peat dam", isEnd: true },
     result_timber_baffle: { text: "Intervention: Timber baffle", isEnd: true, pdf: "guides/timber_dam.pdf" },
@@ -157,7 +200,6 @@ function render() {
             <div class="intervention">${node.text}</div>
         `;
         
-        // Conditionally inject the PDF button ONLY if a pdf path exists
         if (node.pdf) {
             htmlContent += `<a href="${node.pdf}" target="_blank" class="btn-link btn-pdf">📄 Download PDF Guide</a>`;
         }
