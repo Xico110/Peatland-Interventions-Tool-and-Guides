@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peatland Restoration Decision Tool</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        h2 { color: #2c3e50; margin-bottom: 10px; font-size: 24px; }
+        h3 { color: #4f5f6f; font-size: 18px; margin-bottom: 25px; font-weight: 500; min-height: 54px; display: flex; align-items: center; justify-content: center;}
+        .divider { height: 1px; background-color: #e0e0e0; margin: 15px 0 25px 0; }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        button, .btn-link {
+            padding: 12px 35px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-yes { background-color: #27ae60; color: white; }
+        .btn-yes:hover { background-color: #219653; }
+        .btn-no { background-color: #e74c3c; color: white; }
+        .btn-no:hover { background-color: #c0392b; }
+        .btn-pdf { background-color: #2980b9; color: white; margin-top: 10px; box-sizing: border-box; width: 100%;}
+        .btn-pdf:hover { background-color: #2471a3; }
+        .btn-restart { background-color: #7f8c8d; color: white; margin-top: 25px; width: 100%; }
+        .btn-restart:hover { background-color: #6c7a7b; }
+        .intervention {
+            font-size: 24px;
+            color: #2980b9;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            background: #e1f5fe;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Peatland Restoration Intervention Tool</h2>
+    <div class="divider"></div>
+
+    <div id="app-content">
+        </div>
+
+    <button class="btn-restart" onclick="restartApp()">Start Over</button>
+</div>
+
+<script>
+
+const tree = {
+    start: {
+        text: "Is the gully eroding?",
+        yes: "q2",
+        no: "result_nwn"
+    },
+    q2: {
+        text: "Is there peat at the base of the gully?",
+        yes: "q_peat_shallow",
+        no: "q_stone_drop" 
+    },
+    q_mineral_veg: {
+        text: "Is the mineral base vegetated?",
+        yes: "q_sides_eroding",
+        no: "q_stone_drop"
+    },
+    q_sides_eroding: {
+        text: "Confirm if the sides are eroding:",
+        yes: "q_stone_drop",
+        no: "result_nwn"
+    },
+    q_peat_shallow: {
+        text: "Is the peat shallower than 15cm?",
+        yes: "q_stone_drop",
+        no: "q_width_sphag"
+    },
+    q_sphagnym_present: {
+        text: "Is the peat vegetated with sphagnum present?",
+        yes: "q_width_sphag",
+        no: "q_width_no_sphag"
+    },
+    q_width_sphag: {
+        text: "Is it less than 3m wide?",
+        yes: "result_timber_dam",
+        no: "result_timber_baffle"
+    },
+    q_width_no_sphag: {
+        text: "Is it less than 3m wide?",
+        yes: "result_peat_dam",
+        no: "result_timber_baffle"
+    },
+    q_stone_drop: {
+        text: "Is the gully large enough for a stone drop?",
+        yes: "q_wider_3m",
+        no: "q_slope_shallow"
+    },
+    q_wider_3m: {
+        text: "Is it wider than 3m?",
+        yes: "result_stone_baffle",
+        no: "result_stone_dam"
+    },
+    q_slope_shallow: {
+        text: "Is the slope shallow enough for coir logs or heather bales?",
+        yes: "result_coir",
+        no: "result_handball"
+    },
+    // Only the requested endings retain the PDF paths
+    result_nwn: { text: "No work Necessary (NWN)", isEnd: true },
+    result_peat_dam: { text: "Intervention: Peat dam", isEnd: true },
+    result_timber_baffle: { text: "Intervention: Timber baffle", isEnd: true },
+    result_timber_dam: { text: "Intervention: Timber dam", isEnd: true, pdf: "guides/timber_dam.pdf" },
+    result_stone_baffle: { text: "Intervention: Stone baffle", isEnd: true },
+    result_stone_dam: { text: "Intervention: Stone dam", isEnd: true, pdf: "guides/stone_dam.pdf" },
+    result_coir: { text: "Intervention: Coir log/heather bale", isEnd: true, pdf: "guides/coir_heather.pdf" },
+    result_handball: { text: "Intervention: Consider if stone could be handballed in", isEnd: true }
+};
+
+let currentNode = "start";
+
+function render() {
+    const container = document.getElementById("app-content");
+    const node = tree[currentNode];
+
+    if (!node) {
+        container.innerHTML = `<h3>Error: Step data not found.</h3>`;
+        return;
+    }
+
+    if (node.isEnd) {
+        let htmlContent = `
+            <h3>Recommended Outcome</h3>
+            <div class="intervention">${node.text}</div>
+        `;
+        
+        // Conditionally inject the PDF button ONLY if a pdf path exists
+        if (node.pdf) {
+            htmlContent += `<a href="${node.pdf}" target="_blank" class="btn-link btn-pdf">📄 Download PDF Guide</a>`;
+        }
+        
+        container.innerHTML = htmlContent;
+    } else {
+        container.innerHTML = `
+            <h3>${node.text}</h3>
+            <div class="btn-container">
+                <button class="btn-yes" onclick="handleAnswer('yes')">YES</button>
+                <button class="btn-no" onclick="handleAnswer('no')">NO</button>
+            </div>
+        `;
+    }
+}
+
+function handleAnswer(choice) {
+    if (tree[currentNode] && tree[currentNode][choice]) {
+        currentNode = tree[currentNode][choice];
+        render();
+    }
+}
+
+function restartApp() {
+    currentNode = "start";
+    render();
+}
+
+render();
+</script>
+
+</body>
+</html>
