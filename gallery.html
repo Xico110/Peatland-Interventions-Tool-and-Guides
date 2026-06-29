@@ -5,12 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peatland Restoration Gallery</title>
     <style>
+        .btn-back {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    margin-bottom: 25px; /* Spacing between button and gallery grid */
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.btn-back:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
+}
+
+.btn-back:active {
+    transform: translateY(1px);
+}
         .gallery-link {
     text-decoration: none;
     color: inherit;
     display: block;
 }
         body {
+            <a href="index.html" class="btn-back">⬅️ Back to Decision Tool</a>
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #2c4c38;
             color: #333;
