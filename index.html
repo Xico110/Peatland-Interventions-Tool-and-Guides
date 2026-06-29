@@ -21,7 +21,7 @@
             text-align: center;
         }
         
-        /* Fixed Logo & Header Styling */
+        /* Logo Styling */
         .logo-container {
             display: flex;
             justify-content: center;
@@ -30,7 +30,7 @@
             width: 100%;
         }
         .logo-container img {
-            height: 75px; /* Adjust this number to make your logo bigger or smaller */
+            height: 75px; 
             width: auto;
             max-width: 100%;
             transition: transform 0.3s ease;
@@ -193,7 +193,7 @@ function render() {
     const node = tree[currentNode];
 
     if (!node) {
-        container.innerHTML = <h3>Error: Step data not found.</h3>;
+        container.innerHTML = `<h3>Error: Step data not found.</h3>`;
         return;
     }
 
@@ -204,7 +204,7 @@ function render() {
         `;
         
         if (node.pdf) {
-            htmlContent += <a href="${node.pdf}" target="_blank" class="btn-link btn-pdf">📄 Download PDF Guide</a>;
+            htmlContent += `<a href="${node.pdf}" target="_blank" class="btn-link btn-pdf">📄 Download PDF Guide</a>`;
         }
         
         container.innerHTML = htmlContent;
