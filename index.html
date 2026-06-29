@@ -190,6 +190,8 @@ let currentNode = "start";
 
 function render() {
     const container = document.getElementById("app-content");
+    if (!container) return; // Guard clause in case elements aren't ready
+    
     const node = tree[currentNode];
 
     if (!node) {
@@ -231,7 +233,10 @@ function restartApp() {
     render();
 }
 
-render();
+// Ensure the DOM is fully interactive before running the first render
+window.addEventListener('DOMContentLoaded', () => {
+    render();
+});
 </script>
 
 </body>
