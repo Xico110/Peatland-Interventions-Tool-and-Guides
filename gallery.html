@@ -5,71 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peatland Restoration Gallery</title>
     <style>
-        .btn-back {
-    display: inline-block;
-    padding: 12px 24px;
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 15px;
-    transition: all 0.2s ease;
-    margin-bottom: 25px; /* Spacing between button and gallery grid */
-    border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.btn-back:hover {
-    background-color: rgba(255, 255, 255, 0.35);
-    transform: translateY(-1px);
-}
-
-.btn-back:active {
-    transform: translateY(1px);
-}
-        .gallery-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
         body {
-            <a href="index.html" class="btn-back">⬅️ Back to Decision Tool</a>
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #2c4c38;
             color: #333;
-            max-width: 800px; /* Slightly wider to accommodate the grid */
+            max-width: 800px; 
             margin: 40px auto;
             padding: 20px;
         }
-        .header-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        
+        /* Cleaned up & consolidated Back Button styles */
         .btn-back {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            background-color: rgba(255, 255, 255, 0.2); 
             color: white;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-            transition: background 0.2s;
-            margin-bottom: 20px;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            margin-bottom: 30px; 
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
+
         .btn-back:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-1px);
         }
-        h1 {
-            color: white;
-            margin: 0;
-            font-size: 28px;
-            letter-spacing: -0.5px;
+
+        .btn-back:active {
+            transform: translateY(1px);
         }
+
+        .gallery-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
+        
         .gallery-card {
             background: white;
             border-radius: 12px;
@@ -78,23 +58,28 @@
             text-align: center;
             transition: transform 0.2s ease;
         }
+        
         .gallery-card:hover {
             transform: translateY(-4px);
         }
+        
         .gallery-card img {
             width: 100%;
             height: 180px;
             object-fit: cover;
             display: block;
         }
+        
         .gallery-desc {
             padding: 15px;
         }
+        
         .gallery-desc h4 {
             margin: 0 0 8px 0;
             color: #2c3e50;
             font-size: 16px;
         }
+        
         .gallery-desc p {
             margin: 0;
             font-size: 14px;
@@ -104,37 +89,44 @@
     </style>
 </head>
 <body>
+
+    <!-- ✅ This is where the button belongs, at the very top of your visible content -->
+    <a href="index.html" class="btn-back">⬅️ Back to Decision Tool</a>
+
+    <!-- Fixed the missing open grid tag so layout structures correctly -->
+    <div class="gallery-grid">
     
-    <a href="gallery-timber-dams.html" class="gallery-link">
-        <div class="gallery-card">
-            <img src="images/timber_dam.jpeg" alt="Timber Dam">
-            <div class="gallery-desc">
-                <h4>Timber Dam</h4>
-                <p>Plank dams used in high-flow areas or where peat depth is insufficient. Click to see examples.</p>
+        <a href="gallery-timber-dams.html" class="gallery-link">
+            <div class="gallery-card">
+                <img src="images/timber_dam.jpeg" alt="Timber Dam">
+                <div class="gallery-desc">
+                    <h4>Timber Dam</h4>
+                    <p>Plank dams used in high-flow areas or where peat depth is insufficient. Click to see examples.</p>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
 
-    <a href="gallery-stone-dams.html" class="gallery-link">
-        <div class="gallery-card">
-            <img src="images/stone_dam.jpeg" alt="Stone Dam">
-            <div class="gallery-desc">
-                <h4>Stone Dam</h4>
-                <p>Utilized in high-energy channels where heavy erosion requires structural support. Click to see examples.</p>
+        <a href="gallery-stone-dams.html" class="gallery-link">
+            <div class="gallery-card">
+                <img src="images/stone_dam.jpeg" alt="Stone Dam">
+                <div class="gallery-desc">
+                    <h4>Stone Dam</h4>
+                    <p>Utilised in high-energy channels where heavy erosion requires structural support. Click to see examples.</p>
+                </div>
             </div>
-        </div>
-    </a>
+        </a>
 
-    <a href="gallery-coir.html" class="gallery-link">
-        <div class="gallery-card">
-            <img src="images/coir.jpg" alt="Coir Logs">
-            <div class="gallery-desc">
-                <h4>Coir Log</h4>
-                <p>Lightweight, biodegradable interventions designed to trap sediment. Click to see examples.</p>
+        <a href="gallery-coir.html" class="gallery-link">
+            <div class="gallery-card">
+                <img src="images/coir.jpg" alt="Coir Logs">
+                <div class="gallery-desc">
+                    <h4>Coir Log</h4>
+                    <p>Lightweight, biodegradable interventions designed to trap sediment. Click to see examples.</p>
+                </div>
             </div>
-        </div>
-    </a>
-</div>
+        </a>
+        
+    </div>
 
 </body>
 </html>
