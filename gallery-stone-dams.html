@@ -94,5 +94,84 @@
         </div>
     </div>
 
+<div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-nav lightbox-prev">&#10094;</span>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged view">
+        <span class="lightbox-nav lightbox-next">&#10095;</span>
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const cards = Array.from(document.querySelectorAll('.photo-card'));
+        const prevBtn = document.querySelector('.lightbox-prev');
+        const nextBtn = document.querySelector('.lightbox-next');
+        
+        let currentIndex = 0;
+
+        // Function to update the image in the lightbox
+        function updateLightbox(index) {
+            currentIndex = index;
+            const img = cards[currentIndex].querySelector('img');
+            lightboxImg.src = img.src;
+            lightboxImg.alt = img.alt;
+        }
+
+        // Open lightbox when clicking on a card
+        cards.forEach((card, index) => {
+            card.addEventListener('click', () => {
+                updateLightbox(index);
+                lightbox.classList.add('active');
+            });
+        });
+
+        // Navigate forward
+        function showNext() {
+            let nextIndex = (currentIndex + 1) % cards.length;
+            updateLightbox(nextIndex);
+        }
+
+        // Navigate backward
+        function showPrev() {
+            let prevIndex = (currentIndex - 1 + cards.length) % cards.length;
+            updateLightbox(prevIndex);
+        }
+
+        // Click events for arrows
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents closing the lightbox
+            showNext();
+        });
+
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevents closing the lightbox
+            showPrev();
+        });
+
+        // Close lightbox when clicking the overlay or close button
+        lightbox.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('lightbox-nav') && e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+                setTimeout(() => { lightboxImg.src = ''; }, 300);
+            }
+        });
+
+        // Keyboard Accessibility (Left/Right Arrows and Escape)
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'ArrowRight') {
+                showNext();
+            } else if (e.key === 'ArrowLeft') {
+                showPrev();
+            } else if (e.key === 'Escape') {
+                lightbox.classList.remove('active');
+                setTimeout(() => { lightboxImg.src = ''; }, 300);
+            }
+        });
+    </script>
+
+    
 </body>
 </html>
