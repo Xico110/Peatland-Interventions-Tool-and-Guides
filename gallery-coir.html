@@ -53,6 +53,11 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer; /* Changes cursor to pointer to signal it's clickable */
+            transition: transform 0.2s;
+        }
+        .photo-card:hover {
+            transform: scale(1.02); /* Slight lift effect on hover */
         }
         .photo-card img {
             width: 100%;
@@ -67,6 +72,48 @@
             text-align: center;
             font-style: italic;
         }
+
+        /* --- LIGHTBOX MODAL STYLES --- */
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        /* When active, show the lightbox */
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 4px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .lightbox.active .lightbox-content {
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -79,20 +126,48 @@
 
     <div class="sub-gallery-grid">
         <div class="photo-card">
-            <img src="images/coir.jpg">
-            
+            <img src="images/coir.jpg" alt="Coir installation 1">
         </div>
         
         <div class="photo-card">
-            <img src="images/coir_1.jpg">
-            
+            <img src="images/coir_1.jpg" alt="Coir installation 2">
         </div>
 
         <div class="photo-card">
-            <img src="images/coir_2.jpeg">
-            
+            <img src="images/coir_2.jpeg" alt="Coir installation 3">
         </div>
     </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="Enlarged view">
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const cards = document.querySelectorAll('.photo-card');
+
+        // Open lightbox when clicking on a card
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const img = card.querySelector('img');
+                lightboxImg.src = img.src; // Pass the clicked image source to the modal
+                lightboxImg.alt = img.alt;
+                lightbox.classList.add('active');
+            });
+        });
+
+        // Close lightbox when clicking anywhere on the background or close button
+        lightbox.addEventListener('click', (e) => {
+            // Only close if user clicks the background overlay or the close button
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+                // Optional: clear src after transition to prevent previous image flicker next time
+                setTimeout(() => { lightboxImg.src = ''; }, 300);
+            }
+        });
+    </script>
 
 </body>
 </html>
